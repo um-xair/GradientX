@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R4XN DEVTOOLS - Developer Tools Reimagined</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f5ff',
+                        'neon-green': '#39ff14',
+                        'dark-purple': '#0a0a0f',
+                        'code-gray': '#1a1a1a',
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 3s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { textShadow: '0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 15px #00f5ff' },
+                            '100%': { textShadow: '0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(100px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(0, 245, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .code-snippet {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 15, 0.8);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #00f5ff, #39ff14);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hover-glow:hover {
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(42, 42, 42, 0.9) 100%);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            border-color: rgba(0, 245, 255, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.2);
+        }
+        
+        .terminal-cursor {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .slide-up {
+            animation: slide-up 0.8s ease-out forwards;
+        }
+        
+        .fade-in {
+            animation: fade-in 1s ease-out forwards;
+        }
+        
+        .typing-effect {
+            animation: typing 2s steps(20) infinite;
+        }
+        
+        @keyframes typing {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; }
+        }
+    </style>
+</head>
+<body class="bg-dark-purple text-white font-mono overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="text-2xl font-bold gradient-text">R4XN</div>
+                    <div class="ml-2 text-cyber-blue">DEVTOOLS</div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#features" class="text-gray-300 hover:text-cyber-blue px-3 py-2 transition-colors">Features</a>
+                        <a href="#tools" class="text-gray-300 hover:text-cyber-blue px-3 py-2 transition-colors">Tools</a>
+                        <a href="#docs" class="text-gray-300 hover:text-cyber-blue px-3 py-2 transition-colors">Docs</a>
+                        <a href="#contact" class="text-gray-300 hover:text-cyber-blue px-3 py-2 transition-colors">Contact</a>
+                    </div>
+                </div>
+                <div>
+                    <button class="bg-cyber-blue text-black px-4 py-2 rounded-lg hover-glow font-semibold">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center grid-bg">
+        <div class="absolute inset-0 bg-gradient-to-br from-dark-purple via-gray-900 to-dark-purple opacity-90"></div>
+        <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8">
+            <div class="slide-up">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    <span class="gradient-text animate-glow">R4XN</span>
+                    <span class="text-white">DEVTOOLS</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                    Revolutionary developer tools that transform your coding experience with AI-powered insights and blazing-fast performance
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-cyber-blue text-black px-8 py-4 rounded-lg text-lg font-semibold hover-glow">
+                        Start Building
+                    </button>
+                    <button class="border-2 border-cyber-blue text-cyber-blue px-8 py-4 rounded-lg text-lg font-semibold hover:bg-cyber-blue hover:text-black transition-all">
+                        Watch Demo
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Floating Code Snippet -->
+            <div class="mt-16 animate-float">
+                <div class="code-snippet rounded-lg p-6 max-w-2xl mx-auto text-left">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400">terminal</div>
+                    </div>
+                    <div class="text-neon-green">
+                        <div class="mb-2">$ r4xn init my-project</div>
+                        <div class="mb-2">$ r4xn dev --ai-assist</div>
+                        <div class="text-cyber-blue">⚡ Server running at http://localhost:3000</div>
+                        <div class="text-gray-400">🤖 AI Assistant ready<span class="terminal-cursor">|</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold gradient-text mb-4">Powerful Features</h2>
+                <p class="text-xl text-gray-300">Everything you need to build modern applications</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card p-8 rounded-lg">
+                    <div class="text-cyber-blue text-4xl mb-4">🚀</div>
+                    <h3 class="text-xl font-bold mb-4">Lightning Fast</h3>
+                    <p class="text-gray-300">Optimized build system with sub-second hot reload and intelligent caching</p>
+                </div>
+                
+                <div class="feature-card p-8 rounded-lg">
+                    <div class="text-neon-green text-4xl mb-4">🧠</div>
+                    <h3 class="text-xl font-bold mb-4">AI-Powered</h3>
+                    <p class="text-gray-300">Intelligent code completion, bug detection, and optimization suggestions</p>
+                </div>
+                
+                <div class="feature-card p-8 rounded-lg">
+                    <div class="text-purple-400 text-4xl mb-4">🔧</div>
+                    <h3 class="text-xl font-bold mb-4">Developer First</h3>
+                    <p class="text-gray-300">Built by developers, for developers. Intuitive CLI and seamless integration</p>
+                </div>
+                
+                <div class="feature-card p-8 rounded-lg">
+                    <div class="text-yellow-400 text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-bold mb-4">Real-time Analytics</h3>
+                    <p class="text-gray-300">Monitor performance, track errors, and optimize your applications in real-time</p>
+                </div>
+                
+                <div class="feature-card p-8 rounded-lg">
+                    <div class="text-blue-400 text-4xl mb-4">🔐</div>
+                    <h3 class="text-xl font-bold mb-4">Enterprise Security</h3>
+                    <p class="text-gray-300">Built-in security scanning, vulnerability detection, and compliance tools</p>
+                </div>
+                
+                <div class="feature-card p-8 rounded-lg">
+                    <div class="text-pink-400 text-4xl mb-4">🌐</div>
+                    <h3 class="text-xl font-bold mb-4">Cloud Native</h3>
+                    <p class="text-gray-300">Deploy anywhere with Docker support and cloud provider integrations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools" class="py-20 bg-dark-purple">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold gradient-text mb-4">Developer Tools</h2>
+                <p class="text-xl text-gray-300">A complete toolkit for modern development</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Code Editor Preview -->
+                <div class="glass-effect p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold mb-4 text-cyber-blue">Intelligent Code Editor</h3>
+                    <div class="code-snippet rounded-lg p-4">
+                        <div class="text-gray-400 mb-2">// AI-powered suggestions</div>
+                        <div class="text-purple-400">import <span class="text-yellow-400">{ useState }</span> from <span class="text-green-400">'react'</span></div>
+                        <div class="mt-2 text-blue-400">function <span class="text-yellow-400">App</span>() {</div>
+                        <div class="ml-4 text-gray-300">const [<span class="text-yellow-400">data</span>, <span class="text-yellow-400">setData</span>] = <span class="text-blue-400">useState</span>(<span class="text-green-400">null</span>)</div>
+                        <div class="ml-4 text-gray-400">// ✨ AI suggests: Add error handling</div>
+                        <div class="ml-4 text-pink-400">return</div>
+                        <div class="text-blue-400">}</div>
+                    </div>
+                </div>
+                
+                <!-- Terminal Preview -->
+                <div class="glass-effect p-6 rounded-lg">
+                    <h3 class="text-2xl font-bold mb-4 text-neon-green">Enhanced Terminal</h3>
+                    <div class="code-snippet rounded-lg p-4">
+                        <div class="text-neon-green">$ r4xn analyze --performance</div>
+                        <div class="text-gray-300 mt-2">📊 Bundle size: 234KB (-12% from last build)</div>
+                        <div class="text-gray-300">⚡ Load time: 0.8s (98th percentile)</div>
+                        <div class="text-yellow-400 mt-2">⚠️  3 optimization opportunities found</div>
+                        <div class="text-cyan-400 mt-2">💡 Suggested: Enable tree-shaking for utils</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                <div class="fade-in">
+                    <div class="text-4xl font-bold gradient-text mb-2">50K+</div>
+                    <div class="text-gray-300">Active Developers</div>
+                </div>
+                <div class="fade-in">
+                    <div class="text-4xl font-bold gradient-text mb-2">1M+</div>
+                    <div class="text-gray-300">Projects Built</div>
+                </div>
+                <div class="fade-in">
+                    <div class="text-4xl font-bold gradient-text mb-2">99.9%</div>
+                    <div class="text-gray-300">Uptime</div>
+                </div>
+                <div class="fade-in">
+                    <div class="text-4xl font-bold gradient-text mb-2">24/7</div>
+                    <div class="text-gray-300">Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-cyber-blue to-neon-green">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-black mb-4">Ready to Transform Your Development?</h2>
+            <p class="text-xl text-gray-800 mb-8">Join thousands of developers who are already building the future with R4XN DEVTOOLS</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-black text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition-all">
+                    Start Free Trial
+                </button>
+                <button class="border-2 border-black text-black px-8 py-4 rounded-lg text-lg font-semibold hover:bg-black hover:text-white transition-all">
+                    View Pricing
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-purple py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="text-2xl font-bold gradient-text mb-4">R4XN DEVTOOLS</div>
+                    <p class="text-gray-300 mb-4">Empowering developers with next-generation tools and AI-powered insights.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-cyber-blue">Twitter</a>
+                        <a href="#" class="text-gray-400 hover:text-cyber-blue">GitHub</a>
+                        <a href="#" class="text-gray-400 hover:text-cyber-blue">Discord</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-cyber-blue">Features</a></li>
+                        <li><a href="#" class="hover:text-cyber-blue">Pricing</a></li>
+                        <li><a href="#" class="hover:text-cyber-blue">Documentation</a></li>
+                        <li><a href="#" class="hover:text-cyber-blue">API</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-cyber-blue">About</a></li>
+                        <li><a href="#" class="hover:text-cyber-blue">Blog</a></li>
+                        <li><a href="#" class="hover:text-cyber-blue">Careers</a></li>
+                        <li><a href="#" class="hover:text-cyber-blue">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 R4XN DEVTOOLS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('backdrop-blur-lg');
+            } else {
+                nav.classList.remove('backdrop-blur-lg');
+            }
+        });
+
+        // Animate stats on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // Add interactive hover effects
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R4XN Tools - Tech & Hacker Edition</title>
+    <link rel="icon" href="assets/r4xn-black.png" type="image/png" sizes="32x32">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['Fira Mono', 'monospace'],
+                        pop: ['Poppins', 'sans-serif']
+                    },
+                    colors: {
+                        'hacker-green': '#00FF41',
+                        'hacker-cyan': '#00FFF7',
+                        'hacker-purple': '#8B5CF6',
+                        'hacker-bg': '#0A0F0A',
+                        'hacker-dark': '#10151A',
+                    },
+                    boxShadow: {
+                        'neon-green': '0 0 16px #00FF41, 0 0 32px #00FF41',
+                        'neon-cyan': '0 0 16px #00FFF7, 0 0 32px #00FFF7',
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', 'Fira Mono', monospace, sans-serif;
+        }
+        .hacker-bg {
+            background: linear-gradient(135deg, #0A0F0A 0%, #10151A 60%, #1a1a2e 100%);
+        }
+        .code-rain {
+            pointer-events: none;
+            position: absolute;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            opacity: 0.18;
+            mix-blend-mode: lighten;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #00FF41 0%, #00FFF7 50%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hacker-card {
+            background: rgba(10, 15, 10, 0.85);
+            border: 1.5px solid #00FF41;
+            box-shadow: 0 0 24px 0 #00FF4133;
+            backdrop-filter: blur(8px);
+            border-radius: 18px;
+            transition: box-shadow 0.2s, border 0.2s;
+        }
+        .hacker-card:hover {
+            box-shadow: 0 0 32px 0 #00FFF799, 0 0 8px #00FF41;
+            border: 1.5px solid #00FFF7;
+        }
+        .hacker-btn {
+            font-family: 'Fira Mono', monospace;
+            background: #10151A;
+            border: 1.5px solid #00FF41;
+            color: #00FF41;
+            box-shadow: 0 0 8px #00FF4199;
+            transition: all 0.2s;
+        }
+        .hacker-btn:hover {
+            background: #00FF41;
+            color: #10151A;
+            border: 1.5px solid #00FFF7;
+            box-shadow: 0 0 16px #00FFF7, 0 0 32px #00FF41;
+        }
+        .terminal-heading {
+            font-family: 'Fira Mono', monospace;
+            color: #00FF41;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px #00FF41, 0 0 2px #00FFF7;
+            display: inline-block;
+        }
+        .blinking-cursor {
+            font-weight: 700;
+            color: #00FF41;
+            animation: blink 1s steps(2, start) infinite;
+        }
+        @keyframes blink {
+            to { opacity: 0; }
+        }
+        .terminal-sub {
+            font-family: 'Fira Mono', monospace;
+            color: #00FFF7;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .hacker-img-glitch {
+            filter: contrast(1.2) brightness(1.1) drop-shadow(0 0 24px #00FF41cc);
+            mix-blend-mode: lighten;
+            border: 2px solid #00FF41;
+            border-radius: 1.5rem;
+            box-shadow: 0 0 32px #00FF4133, 0 0 8px #00FFF7;
+            background: rgba(0,255,65,0.05);
+        }
+        .ascii-footer {
+            font-family: 'Fira Mono', monospace;
+            color: #00FF41;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="hacker-bg text-white scroll-smooth relative overflow-x-hidden">
+    <!-- Code Rain Overlay -->
+    <canvas class="code-rain" id="codeRain"></canvas>
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 bg-black/60 border-b border-hacker-green/30 backdrop-blur-md">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-hacker-green to-hacker-cyan rounded-lg flex items-center justify-center">
+                        <i class="fas fa-terminal text-hacker-green text-lg"></i>
+                    </div>
+                    <h1 class="text-xl font-bold font-mono text-hacker-green">R4XN Tools</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="hover:text-hacker-cyan font-mono transition-colors">Home</a>
+                    <a href="#tools" class="hover:text-hacker-cyan font-mono transition-colors">Tools</a>
+                    <a href="#pricing" class="hover:text-hacker-cyan font-mono transition-colors">Pricing</a>
+                    <a href="#about" class="hover:text-hacker-cyan font-mono transition-colors">About</a>
+                    <button class="hacker-btn px-6 py-2 rounded-full font-semibold ml-2">Get Started</button>
+                </nav>
+                <button class="md:hidden" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-2xl text-hacker-green"></i>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div class="md:hidden mt-4 pb-4 hidden" id="mobile-menu">
+                <nav class="flex flex-col space-y-4">
+                    <a href="#home" class="hover:text-hacker-cyan font-mono transition-colors">Home</a>
+                    <a href="#tools" class="hover:text-hacker-cyan font-mono transition-colors">Tools</a>
+                    <a href="#pricing" class="hover:text-hacker-cyan font-mono transition-colors">Pricing</a>
+                    <a href="#about" class="hover:text-hacker-cyan font-mono transition-colors">About</a>
+                    <button class="hacker-btn px-6 py-2 rounded-full w-fit font-semibold">Get Started</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center pt-24 relative">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="max-w-4xl mx-auto hacker-card p-10 border-hacker-green/60">
+                <div class="mb-6">
+                    <span class="px-4 py-2 bg-hacker-green/10 text-hacker-green rounded-full text-sm font-mono font-medium border border-hacker-green/30">
+                        <i class="fas fa-user-secret mr-2"></i> Welcome, Operator
+                    </span>
+                </div>
+                <h1 class="terminal-heading mb-4">
+                    <span>&gt;_ R4XN Tech Tools</span><span class="blinking-cursor">|</span>
+                </h1>
+                <div class="terminal-sub mb-6">// Empowering hackers, devs & creators with next-gen tools</div>
+                <p class="text-lg text-hacker-cyan font-mono mb-8 max-w-2xl mx-auto">
+                    <span class="hidden md:inline">[</span> <span class="text-hacker-green">root@r4xn</span>:<span class="text-hacker-purple">~</span>$</span> <span class="text-hacker-cyan">npx create-gradient</span> <span class="hidden md:inline">]</span>
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                    <button class="hacker-btn px-8 py-4 rounded-full text-lg font-semibold shadow-neon-green hover:shadow-neon-cyan transition-all transform hover:scale-105">
+                        <i class="fas fa-terminal mr-2"></i>
+                        Start Hacking
+                    </button>
+                    <button class="hacker-btn px-8 py-4 rounded-full text-lg font-semibold border-hacker-cyan text-hacker-cyan hover:bg-hacker-cyan hover:text-hacker-dark transition-all">
+                        <i class="fas fa-play mr-2"></i>
+                        Watch Demo
+                    </button>
+                </div>
+                <!-- Gradient Main Image (centerpiece) -->
+                <div class="w-full flex justify-center">
+                    <img src="assets/gradient-main.png" alt="Gradient Main" class="w-full max-w-xl hacker-img-glitch">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Floating Animation (code grid) -->
+    <div class="absolute left-0 right-0 w-full z-0 pointer-events-none" style="top: 60vh;">
+        <div class="w-full max-w-3xl mx-auto">
+            <div class="hacker-card p-8 bg-transparent border-hacker-cyan/20">
+                <div class="grid grid-cols-3 gap-4 opacity-70">
+                    <div class="bg-gradient-to-r from-hacker-green/40 to-hacker-cyan/40 rounded-xl h-20"></div>
+                    <div class="bg-gradient-to-r from-hacker-cyan/40 to-hacker-purple/40 rounded-xl h-20"></div>
+                    <div class="bg-gradient-to-r from-hacker-purple/40 to-hacker-green/40 rounded-xl h-20"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tools Showcase -->
+    <section id="tools" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 font-mono gradient-text">
+                    <i class="fas fa-terminal mr-2"></i> Hacker Tools
+                </h2>
+                <p class="text-xl text-hacker-cyan font-mono max-w-2xl mx-auto">
+                    // Everything you need to accelerate your hacking & dev workflow
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Tool Card 1 -->
+                <div class="hacker-card p-8 card-hover border-hacker-green">
+                    <div class="w-16 h-16 bg-gradient-to-r from-hacker-green to-hacker-cyan rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-palette text-hacker-green text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-mono">Gradient Generator</h3>
+                    <p class="text-hacker-cyan mb-6 font-mono">Create stunning CSS gradients with a hacker's touch. Visual, code, and export ready.</p>
+                    <button class="hacker-btn px-6 py-3 rounded-full font-semibold hover:shadow-neon-cyan transition-all w-full">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Try Tool
+                    </button>
+                </div>
+                <!-- Tool Card 2 -->
+                <div class="hacker-card p-8 card-hover border-hacker-cyan">
+                    <div class="w-16 h-16 bg-gradient-to-r from-hacker-cyan to-hacker-purple rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-terminal text-hacker-cyan text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-mono">Box Shadow Builder</h3>
+                    <p class="text-hacker-cyan mb-6 font-mono">Design beautiful box shadows with live preview. Copy CSS code instantly for your projects.</p>
+                    <button class="hacker-btn px-6 py-3 rounded-full font-semibold hover:shadow-neon-green transition-all w-full">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Try Tool
+                    </button>
+                </div>
+                <!-- Tool Card 3 -->
+                <div class="hacker-card p-8 card-hover border-hacker-purple">
+                    <div class="w-16 h-16 bg-gradient-to-r from-hacker-purple to-hacker-green rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-code text-hacker-purple text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-mono">Color Palette Maker</h3>
+                    <p class="text-hacker-cyan mb-6 font-mono">Generate harmonious color palettes for your designs. Export in multiple formats.</p>
+                    <button class="hacker-btn px-6 py-3 rounded-full font-semibold hover:shadow-neon-cyan transition-all w-full">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Try Tool
+                    </button>
+                </div>
+                <!-- Tool Card 4 -->
+                <div class="hacker-card p-8 card-hover border-hacker-green">
+                    <div class="w-16 h-16 bg-gradient-to-r from-hacker-green to-hacker-cyan rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-lock text-hacker-green text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-mono">Password Generator</h3>
+                    <p class="text-hacker-cyan mb-6 font-mono">Generate strong, secure passwords with a single click. Copy and use instantly.</p>
+                    <button class="hacker-btn px-6 py-3 rounded-full font-semibold hover:shadow-neon-green transition-all w-full">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Try Tool
+                    </button>
+                </div>
+                <!-- Tool Card 5 -->
+                <div class="hacker-card p-8 card-hover border-hacker-cyan">
+                    <div class="w-16 h-16 bg-gradient-to-r from-hacker-cyan to-hacker-purple rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-bug text-hacker-cyan text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-mono">Regex Tester</h3>
+                    <p class="text-hacker-cyan mb-6 font-mono">Test and debug regular expressions in real time. Highlight matches and errors.</p>
+                    <button class="hacker-btn px-6 py-3 rounded-full font-semibold hover:shadow-neon-cyan transition-all w-full">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Try Tool
+                    </button>
+                </div>
+                <!-- Tool Card 6 -->
+                <div class="hacker-card p-8 card-hover border-hacker-purple">
+                    <div class="w-16 h-16 bg-gradient-to-r from-hacker-purple to-hacker-green rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-hacker-purple text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-mono">Encryption Tool</h3>
+                    <p class="text-hacker-cyan mb-6 font-mono">Encrypt and decrypt messages with modern algorithms. Stay secure.</p>
+                    <button class="hacker-btn px-6 py-3 rounded-full font-semibold hover:shadow-neon-green transition-all w-full">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Try Tool
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 font-mono gradient-text">
+                    <i class="fas fa-lock mr-2"></i> Access Levels
+                </h2>
+                <p class="text-xl text-hacker-cyan font-mono max-w-2xl mx-auto">
+                    // Choose your access: Open Source or Elite Hacker
+                </p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Open Source Plan -->
+                <div class="hacker-card rounded-3xl p-8 border-hacker-green">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-2 font-mono text-hacker-green">Open Source</h3>
+                        <div class="text-4xl font-bold mb-4 font-mono text-hacker-green">$0<span class="text-lg text-hacker-cyan">/forever</span></div>
+                        <p class="text-hacker-cyan font-mono">Perfect for getting started, always free.</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 font-mono text-hacker-cyan">
+                        <li><i class="fas fa-check text-hacker-green mr-3"></i> Access to basic tools</li>
+                        <li><i class="fas fa-check text-hacker-green mr-3"></i> Community support</li>
+                        <li><i class="fas fa-check text-hacker-green mr-3"></i> Open source templates</li>
+                        <li><i class="fas fa-check text-hacker-green mr-3"></i> Standard export options</li>
+                    </ul>
+                    <button class="hacker-btn w-full px-6 py-4 rounded-full font-semibold hover:shadow-neon-green transition-all">
+                        Get Started Free
+                    </button>
+                </div>
+                <!-- Elite Access Plan -->
+                <div class="hacker-card rounded-3xl p-8 border-hacker-cyan relative overflow-hidden">
+                    <div class="absolute top-4 right-4 bg-hacker-green text-hacker-dark px-3 py-1 rounded-full text-sm font-bold font-mono">
+                        Elite
+                    </div>
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-2 font-mono text-hacker-cyan">Elite Access</h3>
+                        <div class="text-4xl font-bold mb-2 font-mono text-hacker-cyan">$9<span class="text-lg text-hacker-green">/month</span></div>
+                        <div class="text-sm text-hacker-green mb-4 font-mono">or $49/year (save 55%)</div>
+                        <p class="text-hacker-cyan font-mono">For serious hackers & devs.</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 font-mono text-hacker-cyan">
+                        <li><i class="fas fa-check text-hacker-cyan mr-3"></i> Access to all tools</li>
+                        <li><i class="fas fa-check text-hacker-cyan mr-3"></i> Advanced export options</li>
+                        <li><i class="fas fa-check text-hacker-cyan mr-3"></i> Priority support</li>
+                        <li><i class="fas fa-check text-hacker-cyan mr-3"></i> Premium templates</li>
+                        <li><i class="fas fa-check text-hacker-cyan mr-3"></i> API access</li>
+                        <li><i class="fas fa-check text-hacker-cyan mr-3"></i> Team collaboration</li>
+                    </ul>
+                    <button class="hacker-btn w-full px-6 py-4 rounded-full font-semibold hover:shadow-neon-cyan transition-all">
+                        Start Elite Trial
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Benefits Section -->
+    <section id="about" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 font-mono gradient-text">
+                    <i class="fas fa-user-secret mr-2"></i> Why Hack with R4XN?
+                </h2>
+                <p class="text-xl text-hacker-cyan font-mono max-w-2xl mx-auto">
+                    // Built by hackers, for hackers & devs
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="hacker-card text-center p-8 border-hacker-green">
+                    <div class="w-16 h-16 bg-gradient-to-r from-hacker-green to-hacker-cyan rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-bolt text-hacker-green text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-mono">Lightning Fast</h3>
+                    <p class="text-hacker-cyan font-mono">Optimized for speed and performance. Get results instantly without waiting.</p>
+                </div>
+                <div class="hacker-card text-center p-8 border-hacker-cyan">
+                    <div class="w-16 h-16 bg-gradient-to-r from-hacker-cyan to-hacker-purple rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-shield-alt text-hacker-cyan text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-mono">Secure & Private</h3>
+                    <p class="text-hacker-cyan font-mono">Your data stays private. No tracking, no ads, just pure productivity.</p>
+                </div>
+                <div class="hacker-card text-center p-8 border-hacker-purple">
+                    <div class="w-16 h-16 bg-gradient-to-r from-hacker-purple to-hacker-green rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-mobile-alt text-hacker-purple text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 font-mono">Mobile Ready</h3>
+                    <p class="text-hacker-cyan font-mono">Works perfectly on any device. Create on desktop, review on mobile.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-hacker-dark py-12 border-t border-hacker-green/20 relative">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-hacker-green to-hacker-cyan rounded-lg flex items-center justify-center">
+                            <i class="fas fa-terminal text-hacker-green text-lg"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-mono text-hacker-green">R4XN Tools</h3>
+                    </div>
+                    <p class="text-hacker-cyan font-mono">Empowering hackers, developers, and creators with modern tools for creative excellence.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 font-mono text-hacker-green">Tools</h4>
+                    <ul class="space-y-2 text-hacker-cyan font-mono">
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">Gradient Generator</a></li>
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">Box Shadow Builder</a></li>
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">Color Palette Maker</a></li>
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">Password Generator</a></li>
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">Regex Tester</a></li>
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">Encryption Tool</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 font-mono text-hacker-green">Company</h4>
+                    <ul class="space-y-2 text-hacker-cyan font-mono">
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">Support</a></li>
+                        <li><a href="#" class="hover:text-hacker-green transition-colors">Privacy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 font-mono text-hacker-green">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-hacker-green/10 rounded-full flex items-center justify-center hover:bg-hacker-cyan/30 transition-colors">
+                            <i class="fab fa-twitter text-hacker-green"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-hacker-green/10 rounded-full flex items-center justify-center hover:bg-hacker-cyan/30 transition-colors">
+                            <i class="fab fa-github text-hacker-green"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-hacker-green/10 rounded-full flex items-center justify-center hover:bg-hacker-cyan/30 transition-colors">
+                            <i class="fab fa-discord text-hacker-green"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-hacker-green/20 mt-8 pt-8 text-center">
+                <div class="ascii-footer">
+{ "R4XN": "// 01010010 01011000 01001110 // All rights reserved 2025 //" }
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        // Add scroll effect to header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 15, 10, 0.95)';
+            } else {
+                header.style.background = 'rgba(10, 15, 10, 0.65)';
+            }
+        });
+        // Code Rain Animation
+        const canvas = document.getElementById('codeRain');
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        const letters = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const fontSize = 18;
+        const columns = Math.floor(width / fontSize);
+        const drops = Array(columns).fill(1);
+        function draw() {
+            ctx.fillStyle = 'rgba(10,15,10,0.15)';
+            ctx.fillRect(0, 0, width, height);
+            ctx.font = fontSize + 'px Fira Mono, monospace';
+            ctx.fillStyle = '#00FF41';
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(draw, 50);
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        });
+    </script>
+</body>
+</html>

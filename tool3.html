@@ -1,296 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevTool R4XN - Hero Section</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .hero-section {
-            min-height: 100vh;
-            background: radial-gradient(ellipse at center, #080808 0%, #050505 30%, #080808 70%, #0a0a0a 100%);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 60%),
-                radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.015) 0%, transparent 60%),
-                linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.008) 100%);
-            pointer-events: none;
-        }
-
-        .grid-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-        }
-
-        .hero-content {
-            text-align: center;
-            z-index: 10;
-            position: relative;
-            max-width: 900px;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 30px;
-            padding: 0.5rem 1.5rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 0.9rem;
-            font-weight: 500;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .hero-badge:hover {
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateY(-2px);
-        }
-
-        .hero-badge::after {
-            content: '→';
-            margin-left: 0.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .hero-badge:hover::after {
-            transform: translateX(3px);
-        }
-
-        .hero-title {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 700;
-            color: #ffffff;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
-        }
-
-        .hero-title .highlight {
-            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.1rem, 3vw, 1.4rem);
-            color: rgba(255, 255, 255, 0.5);
-            line-height: 1.6;
-            margin-bottom: 3rem;
-            font-weight: 400;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
-            color: #000000;
-            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
-            font-weight: 600;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(255, 255, 255, 0.15);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.02);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-2px);
-        }
-
-        .floating-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-element:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .floating-element:nth-child(2) {
-            top: 60%;
-            right: 10%;
-            animation-delay: 2s;
-        }
-
-        .floating-element:nth-child(3) {
-            bottom: 30%;
-            left: 20%;
-            animation-delay: 4s;
-        }
-
-        .floating-element:nth-child(4) {
-            top: 40%;
-            right: 30%;
-            animation-delay: 1s;
-        }
-
-        .floating-element:nth-child(5) {
-            bottom: 20%;
-            right: 20%;
-            animation-delay: 3s;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px) rotate(0deg);
-                opacity: 0.5;
-            }
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 1rem;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>R4XN Developer Tools</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass-effect {
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .crypto-gradient {
+      background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+    }
+    .crypto-glow {
+      box-shadow: 0 0 50px rgba(99, 102, 241, 0.3);
+    }
+    .floating-crypto {
+      animation: cryptoFloat 6s ease-in-out infinite;
+    }
+    .floating-crypto:nth-child(2) {
+      animation-delay: 2s;
+    }
+    .floating-crypto:nth-child(3) {
+      animation-delay: 4s;
+    }
+    @keyframes cryptoFloat {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+      }
+    }
+    .pulse-ring {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+    .typing-animation {
+      overflow: hidden;
+      border-right: 3px solid #38bdf8;
+      white-space: nowrap;
+      margin: 0 auto;
+      animation: typing 3s steps(40, end), blink-caret 0.5s step-end infinite;
+    }
+    @keyframes typing {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
+    @keyframes blink-caret {
+      from, to {
+        border-color: transparent;
+      }
+      50% {
+        border-color: #38bdf8;
+      }
+    }
+    .hover-lift {
+      transition: all 0.3s;
+    }
+    .hover-lift:hover {
+      transform: translateY(-6px);
+    }
+  </style>
 </head>
-<body>
-    <section class="hero-section">
-        <div class="grid-overlay"></div>
-        
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+<body class="bg-black text-white overflow-x-hidden">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 glass-effect">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="text-2xl font-bold gradient-text">R4XN Tools</div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#features" class="hover:text-sky-400 transition-colors">Features</a>
+          <a href="#pricing" class="hover:text-sky-400 transition-colors">Pricing</a>
+          <a href="#about" class="hover:text-sky-400 transition-colors">About</a>
         </div>
+        <div class="flex items-center space-x-4">
+          <button class="px-4 py-2 text-sm border border-sky-500 rounded-lg hover:bg-sky-500 transition-colors">Sign In</button>
+          <button class="px-4 py-2 text-sm crypto-gradient rounded-lg hover:scale-105 transition-transform">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-        <div class="hero-content">
-            <div class="hero-badge">
-                DevTool Solutions for You
-            </div>
-            
-            <h1 class="hero-title">
-                Deploy your <span class="highlight">tools</span><br>
-                in seconds, not hours
-            </h1>
-            
-            <p class="hero-subtitle">
-                With our state of the art, cutting edge, we are so back kinda development services,
-                you can deploy your tools in seconds.
-            </p>
-            
-            <div class="hero-buttons">
-                <a href="#" class="btn btn-primary">
-                    Start a project
-                </a>
-                <a href="#" class="btn btn-secondary">
-                    Book a call
-                </a>
-            </div>
+  <section class="relative min-h-screen flex items-center justify-center bg-black bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:40px_40px] overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-gray-900/60 to-black/80"></div>
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="floating-crypto absolute top-20 left-10 text-6xl opacity-20">⚙️</div>
+      <div class="floating-crypto absolute top-40 right-20 text-4xl opacity-20">{ }</div>
+      <div class="floating-crypto absolute bottom-32 left-32 text-5xl opacity-20">💻</div>
+    </div>
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full opacity-20 blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full opacity-20 blur-3xl"></div>
+    <div class="relative z-10 text-center px-4 max-w-6xl mx-auto">
+      <div class="inline-flex items-center px-4 py-2 mb-8 bg-gray-900/50 glass-effect rounded-full">
+        <div class="w-2 h-2 bg-green-400 rounded-full mr-2 pulse-ring"></div>
+        <span class="text-sm text-gray-300">Open Source • Developer First</span>
+      </div>
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
+        <span class="block text-white">Build Smarter with</span>
+        <span class="block gradient-text">R4XN Developer Tools</span>
+        <span class="block text-white">Automation & Speed</span>
+      </h1>
+      <div class="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">
+        <div class="typing-animation">Scaffold apps, deploy APIs, and monitor everything—effortlessly</div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+        <button class="group relative px-8 py-4 crypto-gradient rounded-lg hover-lift overflow-hidden crypto-glow">
+          <div class="absolute inset-0 bg-gradient-to-r from-sky-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div class="relative flex items-center font-semibold">
+            <span>Launch Your Stack</span>
+            <svg class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </div>
+        </button>
+        <button class="group px-8 py-4 bg-gray-900/40 text-white rounded-lg glass-effect hover-lift">
+          <div class="flex items-center font-semibold">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-10 5l18-18"></path>
+            </svg>
+            <span>Explore Docs</span>
+          </div>
+        </button>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="p-4 bg-gray-900/30 glass-effect rounded-lg">
+          <div class="text-2xl font-bold text-green-400 mb-1">9,800+</div>
+          <div class="text-sm text-gray-400">Developers onboarded</div>
         </div>
-    </section>
+        <div class="p-4 bg-gray-900/30 glass-effect rounded-lg">
+          <div class="text-2xl font-bold text-blue-400 mb-1">400+</div>
+          <div class="text-sm text-gray-400">APIs deployed</div>
+        </div>
+        <div class="p-4 bg-gray-900/30 glass-effect rounded-lg">
+          <div class="text-2xl font-bold text-purple-400 mb-1">99.98%</div>
+          <div class="text-sm text-gray-400">Uptime last 12 months</div>
+        </div>
+        <div class="p-4 bg-gray-900/30 glass-effect rounded-lg">
+          <div class="text-2xl font-bold text-yellow-400 mb-1">12K+</div>
+          <div class="text-sm text-gray-400">Projects generated</div>
+        </div>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
